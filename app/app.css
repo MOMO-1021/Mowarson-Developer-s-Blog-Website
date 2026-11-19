@@ -139,6 +139,13 @@
   font-size: 0.88rem;
 }
 
+.admin-post-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+}
+
 .status-pill {
   display: inline-flex;
   padding: 4px 9px;
@@ -173,6 +180,18 @@
 .button-outline:hover {
   background: #dbeafe;
   color: #1d4ed8;
+}
+
+.button-danger {
+  border: 1px solid #fecdd3;
+  background: #fff1f2;
+  box-shadow: none;
+  color: #be123c;
+}
+
+.button-danger:hover {
+  background: #ffe4e6;
+  color: #9f1239;
 }
 
 .admin-form-grid {
@@ -297,6 +316,10 @@
 
   .admin-post-row {
     align-items: flex-start;
+  }
+
+  .admin-post-actions {
+    flex-direction: column;
   }
 
   .admin-account {

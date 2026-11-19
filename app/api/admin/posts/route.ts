@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import { authOptions } from "@/lib/auth";
 import {
+  deleteRepositoryPost,
   listRepositoryPosts,
   saveRepositoryPost,
   validatePostInput,
@@ -62,4 +63,33 @@ export async function POST(request: Request) {
 
 export async function PUT(request: Request) {
   return save(request, true);
+}
+
+export async function DELETE(request: Request) {
+  if (!(await isSignedIn())) {
+    return NextResponse.json({ error: "Sign in to manage posts." }, { status: 401 });
+  }
+
+  let payload: unknown;
+  try {
+    payload = await request.json();
+  } catch {
+    return NextResponse.json({ error: "The request body must be valid JSON." }, { status: 400 });
+  }
+
+  if (
+    !payload ||
+    typeof payload !== "object" ||
+    !("slug" in payload) ||
+    typeof payload.slug !== "string"
+  ) {
+    return NextResponse.json({ error: "An article slug is required." }, { status: 400 });
+  }
+
+  try {
+    await deleteRepositoryPost(payload.slug);
+    return NextResponse.json({ deleted: true, slug: payload.slug });
+  } catch (error) {
+    return errorResponse(error);
+  }
 }

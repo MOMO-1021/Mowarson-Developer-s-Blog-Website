@@ -67,6 +67,7 @@ export default function AdminPage() {
   const [showEditor, setShowEditor] = useState(false);
   const [loadingPosts, setLoadingPosts] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [deletingSlug, setDeletingSlug] = useState<string | null>(null);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
 
@@ -136,6 +137,41 @@ export default function AdminPage() {
       setError(cause instanceof Error ? cause.message : "The article could not be saved.");
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function deletePost(selected: AdminPost) {
+    if (
+      !window.confirm(
+        `Delete "${selected.title}"? This removes it from the blog and cannot be undone from this dashboard.`,
+      )
+    ) {
+      return;
+    }
+
+    setDeletingSlug(selected.slug);
+    setMessage("");
+    setError("");
+    try {
+      const response = await fetch("/api/admin/posts", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ slug: selected.slug }),
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(result.error || "The article could not be deleted.");
+      }
+      setPosts((current) => current.filter((item) => item.slug !== selected.slug));
+      if (post.slug === selected.slug) {
+        setShowEditor(false);
+        setEditing(false);
+      }
+      setMessage("Article deleted from GitHub. Netlify will deploy the removal shortly.");
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "The article could not be deleted.");
+    } finally {
+      setDeletingSlug(null);
     }
   }
 
@@ -209,9 +245,24 @@ export default function AdminPage() {
                     <h3>{item.title}</h3>
                     <p>{item.excerpt}</p>
                   </div>
-                  <button className="button button-outline" type="button" onClick={() => editPost(item)}>
-                    Edit
-                  </button>
+                  <div className="admin-post-actions">
+                    <button
+                      className="button button-outline"
+                      type="button"
+                      onClick={() => editPost(item)}
+                      disabled={Boolean(deletingSlug)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="button button-danger"
+                      type="button"
+                      onClick={() => void deletePost(item)}
+                      disabled={saving || Boolean(deletingSlug)}
+                    >
+                      {deletingSlug === item.slug ? "Deleting…" : "Delete"}
+                    </button>
+                  </div>
                 </article>
               ))}
             </div>

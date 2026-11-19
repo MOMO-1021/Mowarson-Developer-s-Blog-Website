@@ -217,3 +217,35 @@ export async function saveRepositoryPost(
     throw new GitHubError("GitHub rejected the article update.", response.status);
   }
 }
+
+export async function deleteRepositoryPost(slug: string): Promise<void> {
+  if (!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(slug) || slug.length > 80) {
+    throw new Error("The article slug is invalid.");
+  }
+
+  const { branch } = config();
+  const filePath = `content/posts/${slug}.md`;
+  const fileUrl = `${apiUrl(filePath)}?ref=${encodeURIComponent(branch)}`;
+  const fileResponse = await requestGitHub(fileUrl);
+  if (fileResponse.status === 404) {
+    throw new GitHubError("That article no longer exists in the repository.", 404);
+  }
+
+  const file = (await fileResponse.json()) as GitHubFile;
+  if (!file.sha) {
+    throw new Error("GitHub did not return the article's file hash.");
+  }
+
+  const response = await requestGitHub(apiUrl(filePath), {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      message: `Delete blog post: ${slug}`,
+      sha: file.sha,
+      branch,
+    }),
+  });
+  if (!response.ok) {
+    throw new GitHubError("GitHub rejected the article deletion.", response.status);
+  }
+}

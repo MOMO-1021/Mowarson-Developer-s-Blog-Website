@@ -52,6 +52,8 @@ After setup, visit `/admin` on the deployed site. **New article** opens the
 editor; use **Save draft** or **Publish article**. Both save a Markdown file in
 `content/posts/`. Drafts are excluded from the public blog. Publishing a post
 commits it to `main`, which triggers a Netlify deploy.
+Use **Delete** in the post list to remove an article after confirming; the
+deletion is committed to GitHub and Netlify redeploys without that article.
 
 ## Existing static article template
 
