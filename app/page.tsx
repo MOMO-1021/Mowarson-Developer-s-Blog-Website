@@ -48,7 +48,8 @@ export default async function HomePage() {
                 online. Written for people building something real.
               </p>
               <Link className="button" href="#articles">
-                Explore the articles <span aria-hidden="true">↓</span>
+                Explore the articles 
+                {/* <span aria-hidden="true">↓</span> */}
               </Link>
             </div>
           </div>
