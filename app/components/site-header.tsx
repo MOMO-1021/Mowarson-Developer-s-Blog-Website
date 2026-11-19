@@ -44,9 +44,6 @@ export function SiteHeader() {
           >
             Portfolio <span aria-hidden="true">↗</span>
           </a>
-          <Link className="nav-cta" href="/admin" onClick={() => setOpen(false)}>
-            Write a post
-          </Link>
           <ReaderSignOut />
         </nav>
       </div>

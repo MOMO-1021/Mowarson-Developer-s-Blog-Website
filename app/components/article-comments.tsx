@@ -105,7 +105,7 @@ export function ArticleComments({ slug }: { slug: string }) {
       <div className="comment-list" aria-live="polite">
         {loading ? (
           <p className="comments-loading"><span className="loading-spinner" /> Loading comments…</p>
-        ) : comments.length ? (
+        ) : error ? null : comments.length ? (
           comments.map((comment) => (
             <article className="comment-item" key={comment.id}>
               <div className="comment-meta">

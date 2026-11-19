@@ -81,7 +81,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <aside className="post-aside" aria-label="More articles">
             <h2>Keep reading</h2>
             <Link href="/#articles">View all articles →</Link>
-            <Link href="/admin">Write a post →</Link>
           </aside>
         </div>
       </main>
