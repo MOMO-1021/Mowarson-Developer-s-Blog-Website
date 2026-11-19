@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 import { readerAuthClient } from "@/lib/reader-auth/client";
 
@@ -37,7 +36,6 @@ function Spinner() {
 }
 
 export function AuthForm({ view, token, invalidToken = false }: AuthFormProps) {
-  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -69,8 +67,7 @@ export function AuthForm({ view, token, invalidToken = false }: AuthFormProps) {
         if (result.error) {
           throw new Error(result.error.message || "Could not sign in.");
         }
-        router.replace("/");
-        router.refresh();
+        window.location.assign("/");
       } else if (view === "sign-up") {
         const result = await readerAuthClient.signUp.email({
           name: name.trim(),
@@ -80,8 +77,7 @@ export function AuthForm({ view, token, invalidToken = false }: AuthFormProps) {
         if (result.error) {
           throw new Error(result.error.message || "Could not create your account.");
         }
-        router.replace("/");
-        router.refresh();
+        window.location.assign("/");
       } else if (view === "forgot-password") {
         const result = await readerAuthClient.requestPasswordReset({
           email,
