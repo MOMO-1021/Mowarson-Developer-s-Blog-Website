@@ -1,31 +1,59 @@
 # Mowarson Developer Journal
 
-A lightweight static blog that follows the visual style of the Mowarson Developer portfolio. It has no build step, database, or runtime dependency.
+A Next.js blog with a private writing dashboard. Sign in with the allowed GitHub
+account at `/admin`, write in Markdown, save drafts, and publish posts directly
+to this repository. Publishing commits the article to GitHub; Netlify rebuilds
+the public blog from `main`.
 
-## Preview
+The four original articles have been migrated to Markdown in `content/posts/`.
+Their former `/articles/*.html` URLs redirect to their Next.js article pages.
 
-Open `index.html` in a browser, or serve this folder with any static-file server. For example, with Node.js installed:
+## Run locally
 
-```powershell
-npx serve .
-```
+1. Install Node.js, then run `npm install`.
+2. Copy `.env.example` to `.env.local` and fill in the GitHub and NextAuth values
+   described below.
+3. Run `npm run dev` and open `http://localhost:3000`.
+4. Open `http://localhost:3000/admin` to sign in and manage articles.
 
-## Publish
+## Configure GitHub access
 
-Deploy this folder as the publish directory on a static host such as Netlify or GitHub Pages. Connect the blog's production domain to the portfolio by adding that final URL to the portfolio's blog page after the domain is assigned.
+The dashboard uses GitHub OAuth to restrict sign-in to
+`ADMIN_GITHUB_USERNAME`. It uses a separate fine-grained GitHub token to commit
+posts to the repository.
 
-## Add an article
+1. Create a GitHub OAuth App. Set its callback URL to
+   `https://mowarson-developer-s-blog-website.netlify.app/api/auth/callback/github`.
+   Copy its client ID and client secret to `GITHUB_ID` and `GITHUB_SECRET`.
+2. Create a fine-grained personal access token for this repository only. Grant
+   **Contents: Read and write** permission, then set it as `GITHUB_TOKEN`.
+3. Set `GITHUB_OWNER=mowarson-developer`, `GITHUB_REPO=Mowarson-Developer-s-Blog-Website`,
+   `GITHUB_BRANCH=main`, and `ADMIN_GITHUB_USERNAME=mowarson-developer`.
+4. Set `NEXTAUTH_URL` to the site URL and `NEXTAUTH_SECRET` to a long random
+   secret. To generate one in PowerShell, run:
 
-1. Copy `templates/article-template.html` into `articles/` and give it a short, descriptive filename.
-2. Replace every `{{PLACEHOLDER}}`, follow the writing notes in the file, and remove the authoring comments before publishing.
-3. Update the title, description, social metadata, structured data, category, date, image, and article content. Add a canonical URL after the Netlify site URL is assigned.
-4. Add a matching card in `index.html` inside `#article-grid`. Set `data-category` to `web-design`, `growth`, `strategy`, or `brand-positioning`, and add search terms to `data-search`.
-5. Add the new article to the JSON-LD `blogPost` list in `index.html` and add it to the related links on relevant article pages.
+   ```powershell
+   node -e "console.log(require('crypto').randomBytes(32).toString('base64'))"
+   ```
 
-Article pages are regular HTML, so each post remains directly accessible and indexable without client-side rendering. The detailed Brand Positioning & Messaging template includes a table of contents, summary, takeaways, positioning framework, worked example, implementation checklist, FAQs, author card, related posts, and CTA. Use the existing portfolio palette and shared `style.css` classes when adding components.
+Keep all secrets in `.env.local` locally and in Netlify's environment-variable
+settings for the deployed site. Never commit them. For local OAuth sign-in,
+create a separate development OAuth App with callback URL
+`http://localhost:3000/api/auth/callback/github`.
 
-The portfolio's Blog page still needs the live Netlify URL before its article links can be pointed to this separate site. After creating the Netlify site, update the portfolio links with the assigned `*.netlify.app` address (or your custom domain).
+## Deploy on Netlify
 
-# Mowarson-Developer-s-Blog-Website
+Connect this GitHub repository to Netlify. The build command is `npm run build`;
+Netlify's Next.js integration handles the publish output. Add the environment
+variables above in **Site configuration → Environment variables**, using the
+production callback URL and production `NEXTAUTH_URL`, then trigger a deploy.
 
-A Website dedicated to blogs written by Mowarson Developer
+After setup, visit `/admin` on the deployed site. **New article** opens the
+editor; use **Save draft** or **Publish article**. Both save a Markdown file in
+`content/posts/`. Drafts are excluded from the public blog. Publishing a post
+commits it to `main`, which triggers a Netlify deploy.
+
+## Existing static article template
+
+`templates/article-template.html` is retained for reference. New posts written
+in the dashboard use the Markdown starter included in the editor.
