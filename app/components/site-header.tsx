@@ -30,20 +30,9 @@ export function SiteHeader() {
           id="primary-navigation"
           aria-label="Main navigation"
         >
-          <Link className="current" href="/" onClick={() => setOpen(false)}>
-            Journal
-          </Link>
           <Link href="/#articles" onClick={() => setOpen(false)}>
             Articles
           </Link>
-          <a
-            href="https://mowarsondeveloper.netlify.app/"
-            target="_blank"
-            rel="noopener noreferrer"
-            onClick={() => setOpen(false)}
-          >
-            Portfolio <span aria-hidden="true">↗</span>
-          </a>
           <ReaderSignOut />
         </nav>
       </div>

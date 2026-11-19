@@ -10,32 +10,25 @@ export function SiteFooter() {
         <p>Thoughtful websites. Clearer brands. Better growth.</p>
         <div className="footer-links">
           <a
-            href="https://mowarsondeveloper.netlify.app/"
+            href="https://www.facebook.com/profile.php?id=61596554436022"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Portfolio
+            Facebook
           </a>
           <a
-            href="https://mowarsondeveloper.netlify.app/contact.html"
+            href="https://x.com/MowarsonDev"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Contact
+            X
           </a>
           <a
-            href="https://www.instagram.com/mowarson_developer/"
+            href="https://www.threads.com/@mowarson_developer"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Instagram
-          </a>
-          <a
-            href="https://www.linkedin.com/in/mowarson-developer-298404302/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            LinkedIn
+            Threads
           </a>
         </div>
         <small>© {new Date().getFullYear()} Mowarson Developer. All rights reserved.</small>

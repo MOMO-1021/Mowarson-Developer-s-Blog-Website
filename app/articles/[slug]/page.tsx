@@ -44,7 +44,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       <SiteHeader />
       <main className="container">
         <nav className="breadcrumbs" aria-label="Breadcrumb">
-          <Link href="/">Journal</Link>
+          <span>{categoryLabel}</span>
           <span aria-hidden="true">/</span>
           <span aria-current="page">{post.title}</span>
         </nav>
