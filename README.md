@@ -25,3 +25,7 @@ Deploy this folder as the publish directory on a static host such as Netlify or 
 Article pages are regular HTML, so each post remains directly accessible and indexable without client-side rendering. The detailed Brand Positioning & Messaging template includes a table of contents, summary, takeaways, positioning framework, worked example, implementation checklist, FAQs, author card, related posts, and CTA. Use the existing portfolio palette and shared `style.css` classes when adding components.
 
 The portfolio's Blog page still needs the live Netlify URL before its article links can be pointed to this separate site. After creating the Netlify site, update the portfolio links with the assigned `*.netlify.app` address (or your custom domain).
+
+# Mowarson-Developer-s-Blog-Website
+
+A Website dedicated to blogs written by Mowarson Developer
