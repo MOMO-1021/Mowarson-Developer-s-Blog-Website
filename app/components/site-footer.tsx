@@ -30,6 +30,20 @@ export function SiteFooter() {
           >
             Threads
           </a>
+          <a
+            href="https://www.instagram.com/mowarson_developer/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Instagram
+          </a>
+          <a
+            href="https://www.linkedin.com/in/mowarson-developer-298404302/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LinkedIn
+          </a>
         </div>
         <small>© {new Date().getFullYear()} Mowarson Developer. All rights reserved.</small>
       </div>

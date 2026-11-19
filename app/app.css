@@ -195,17 +195,28 @@
 }
 
 .reader-sign-out {
-  padding: 8px 0;
-  border: 0;
-  background: transparent;
-  color: var(--muted);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 16px;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  background: #eff6ff;
+  box-shadow: 0 6px 14px #2563eb1a;
+  color: #2563eb;
   cursor: pointer;
   font: inherit;
   font-size: 0.88rem;
+  font-weight: 650;
+  transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease,
+    transform 160ms ease;
 }
 
 .reader-sign-out:hover {
-  color: var(--blue);
+  border-color: #93c5fd;
+  background: #dbeafe;
+  color: #1d4ed8;
+  transform: translateY(-1px);
 }
 
 .reader-sign-out:disabled {
