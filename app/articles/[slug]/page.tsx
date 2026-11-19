@@ -2,18 +2,17 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
+import { ArticleComments } from "@/app/components/article-comments";
+import { ArticleShare } from "@/app/components/article-share";
 import { SiteFooter } from "@/app/components/site-footer";
 import { SiteHeader } from "@/app/components/site-header";
-import { getPublishedPost, getPublishedPosts } from "@/lib/posts";
+import { getPublishedPost } from "@/lib/posts";
 
 interface ArticlePageProps {
   params: Promise<{ slug: string }>;
 }
 
-export async function generateStaticParams() {
-  const posts = await getPublishedPosts();
-  return posts.map((post) => ({ slug: post.slug }));
-}
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
@@ -62,6 +61,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               <span aria-hidden="true">·</span>
               <span>{post.readingTime} min read</span>
             </div>
+            <ArticleShare title={post.title} />
             <div className="post-content">
               <ReactMarkdown>{post.body}</ReactMarkdown>
             </div>
@@ -76,6 +76,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 Let&apos;s talk <span aria-hidden="true">↗</span>
               </a>
             </div>
+            <ArticleComments slug={post.slug} />
           </article>
           <aside className="post-aside" aria-label="More articles">
             <h2>Keep reading</h2>

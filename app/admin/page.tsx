@@ -176,7 +176,13 @@ export default function AdminPage() {
   }
 
   if (status === "loading") {
-    return <main className="admin-page"><p>Checking your sign-in…</p></main>;
+    return (
+      <main className="admin-page">
+        <p className="admin-empty">
+          <span className="loading-spinner" aria-hidden="true" /> Checking your sign-in…
+        </p>
+      </main>
+    );
   }
 
   if (status !== "authenticated") {

@@ -4,6 +4,8 @@ import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
 import { getPublishedPosts } from "@/lib/posts";
 
+export const dynamic = "force-dynamic";
+
 const categoryLabels: Record<string, string> = {
   "web-design": "Web design",
   growth: "Growth & marketing",

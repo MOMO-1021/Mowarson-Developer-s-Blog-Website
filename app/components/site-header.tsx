@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { ReaderSignOut } from "@/app/components/reader-sign-out";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -46,6 +47,7 @@ export function SiteHeader() {
           <Link className="nav-cta" href="/admin" onClick={() => setOpen(false)}>
             Write a post
           </Link>
+          <ReaderSignOut />
         </nav>
       </div>
     </header>
