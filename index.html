@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Practical notes on building better websites, growing a business online, and creating a brand people remember."
+    />
+    <meta name="theme-color" content="#f8fafc" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="The Mowarson Developer Journal" />
+    <meta
+      property="og:description"
+      content="Practical notes on websites, marketing, and building a memorable brand."
+    />
+    <title>The Journal — Mowarson Developer</title>
+    <link rel="icon" href="assets/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "The Mowarson Developer Journal",
+        "description": "Practical notes on websites, marketing, and building a memorable brand.",
+        "author": {
+          "@type": "Person",
+          "name": "Mowarson"
+        },
+        "blogPost": [
+          {
+            "@type": "BlogPosting",
+            "headline": "SEO-Friendly Website Design: A Practical Starting Point",
+            "url": "articles/seo-friendly-website-design.html"
+          },
+          {
+            "@type": "BlogPosting",
+            "headline": "Lead Generation Strategies That Respect Your Visitors",
+            "url": "articles/lead-generation-strategies.html"
+          },
+          {
+            "@type": "BlogPosting",
+            "headline": "How to Choose a Web Design Consultant",
+            "url": "articles/choosing-a-web-design-consultant.html"
+          },
+          {
+            "@type": "BlogPosting",
+            "headline": "Brand Positioning vs. Messaging: A Practical Framework",
+            "url": "articles/brand-positioning-and-messaging.html"
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="index.html" aria-label="Mowarson Developer home">
+          Mowarson<span>Developer</span>
+        </a>
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-label="Open navigation"
+          aria-expanded="false"
+          aria-controls="primary-navigation"
+        >
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="site-nav" id="primary-navigation" aria-label="Main navigation">
+          <a class="current" href="index.html" aria-current="page">Journal</a>
+          <a href="#articles">Articles</a>
+          <a href="https://mowarsondeveloper.netlify.app/" target="_blank" rel="noopener noreferrer">
+            Portfolio <span aria-hidden="true">↗</span>
+          </a>
+          <a
+            class="nav-cta"
+            href="https://mowarsondeveloper.netlify.app/contact.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >Let's talk</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="hero">
+        <div class="container hero-inner">
+          <div class="hero-copy">
+            <p class="eyebrow"><span class="eyebrow-dot"></span> The Mowarson Developer Journal</p>
+            <h1>Ideas for a stronger <span>digital presence.</span></h1>
+            <p class="hero-description">
+              Straightforward lessons on websites, search, and growing a brand online.
+              Written for people building something real.
+            </p>
+            <a class="button" href="#articles">Explore the articles <span aria-hidden="true">↓</span></a>
+          </div>
+          <aside class="hero-note" aria-label="About this journal">
+            <div class="author-lockup">
+              <img src="assets/mowarson.jpg" alt="Mowarson" width="64" height="64" />
+              <div>
+                <strong>Mowarson</strong>
+                <span>Web designer &amp; brand strategist</span>
+              </div>
+            </div>
+            <p>
+              A growing library of practical ideas to help small businesses show up
+              clearly, earn trust, and turn attention into action.
+            </p>
+            <a href="https://mowarsondeveloper.netlify.app/about.html" target="_blank" rel="noopener noreferrer">
+              More about me <span aria-hidden="true">→</span>
+            </a>
+          </aside>
+        </div>
+      </section>
+
+      <section class="article-section container" id="articles">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow"><span class="eyebrow-dot"></span> Field notes &amp; guides</p>
+            <h2>Latest articles</h2>
+          </div>
+          <p class="article-count"><span id="visible-count">4</span> articles</p>
+        </div>
+
+        <div class="article-tools">
+          <label class="search-box">
+            <span class="sr-only">Search articles</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 4 4"></path></svg>
+            <input id="article-search" type="search" placeholder="Search articles..." autocomplete="off" />
+          </label>
+          <div class="category-list" role="group" aria-label="Filter by topic">
+            <button class="category-chip active" type="button" data-category="all" aria-pressed="true">All topics</button>
+            <button class="category-chip" type="button" data-category="web-design" aria-pressed="false">Web design</button>
+            <button class="category-chip" type="button" data-category="growth" aria-pressed="false">Growth &amp; marketing</button>
+            <button class="category-chip" type="button" data-category="strategy" aria-pressed="false">Strategy</button>
+            <button class="category-chip" type="button" data-category="brand-positioning" aria-pressed="false">Brand positioning &amp; messaging</button>
+          </div>
+        </div>
+
+        <div class="article-grid" id="article-grid">
+          <article class="article-card" data-category="brand-positioning" data-search="brand positioning messaging strategy framework audience differentiation value promise">
+            <div class="card-topline"><span class="topic-tag">Brand positioning &amp; messaging</span><span class="reading-time">7 min read</span></div>
+            <h3><a href="articles/brand-positioning-and-messaging.html">Brand positioning vs. messaging: a practical framework</a></h3>
+            <p>Understand the difference between the strategic choice behind your brand and the language you use to bring that choice to life.</p>
+            <div class="card-bottom"><span>Nov 19, 2026</span><a class="read-link" href="articles/brand-positioning-and-messaging.html" aria-label="Read brand positioning versus messaging: a practical framework">Read article <span aria-hidden="true">→</span></a></div>
+          </article>
+          <article class="article-card" data-category="web-design" data-search="seo friendly website design search optimization technical page speed content">
+            <div class="card-topline"><span class="topic-tag">Web design</span><span class="reading-time">6 min read</span></div>
+            <h3><a href="articles/seo-friendly-website-design.html">SEO-friendly website design: a practical starting point</a></h3>
+            <p>Build a site people and search engines can understand, from useful page structure to a faster mobile experience.</p>
+            <div class="card-bottom"><span>Nov 19, 2026</span><a class="read-link" href="articles/seo-friendly-website-design.html" aria-label="Read SEO-friendly website design: a practical starting point">Read article <span aria-hidden="true">→</span></a></div>
+          </article>
+          <article class="article-card" data-category="growth" data-search="lead generation strategy visitors leads conversion call to action forms">
+            <div class="card-topline"><span class="topic-tag">Growth &amp; marketing</span><span class="reading-time">5 min read</span></div>
+            <h3><a href="articles/lead-generation-strategies.html">Lead generation strategies that respect your visitors</a></h3>
+            <p>Turn the right website visits into genuine conversations with clear offers, useful calls to action, and thoughtful follow-up.</p>
+            <div class="card-bottom"><span>Nov 19, 2026</span><a class="read-link" href="articles/lead-generation-strategies.html" aria-label="Read lead generation strategies that respect your visitors">Read article <span aria-hidden="true">→</span></a></div>
+          </article>
+          <article class="article-card" data-category="strategy" data-search="choose hire web design consultant strategy questions process budget">
+            <div class="card-topline"><span class="topic-tag">Strategy</span><span class="reading-time">7 min read</span></div>
+            <h3><a href="articles/choosing-a-web-design-consultant.html">How to choose a web design consultant</a></h3>
+            <p>What to ask before you hire, how to compare proposals, and why the right partner starts with your business goals.</p>
+            <div class="card-bottom"><span>Nov 19, 2026</span><a class="read-link" href="articles/choosing-a-web-design-consultant.html" aria-label="Read how to choose a web design consultant">Read article <span aria-hidden="true">→</span></a></div>
+          </article>
+        </div>
+        <p class="empty-state" id="empty-state" hidden>No articles match that search. Try another keyword or topic.</p>
+      </section>
+
+      <section class="portfolio-callout container">
+        <div>
+          <p class="eyebrow"><span class="eyebrow-dot"></span> Built for your next step</p>
+          <h2>Have a project in mind?</h2>
+          <p>Explore my work and services, or get in touch to talk through your goals.</p>
+        </div>
+        <a class="button button-light" href="https://mowarsondeveloper.netlify.app/" target="_blank" rel="noopener noreferrer">
+          Visit my portfolio <span aria-hidden="true">↗</span>
+        </a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <a class="logo logo-footer" href="index.html">Mowarson<span>Developer</span></a>
+        <p>Thoughtful websites. Clearer brands. Better growth.</p>
+        <div class="footer-links">
+          <a href="https://mowarsondeveloper.netlify.app/" target="_blank" rel="noopener noreferrer">Portfolio</a>
+          <a href="https://mowarsondeveloper.netlify.app/contact.html" target="_blank" rel="noopener noreferrer">Contact</a>
+          <a href="https://www.instagram.com/mowarson_developer/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/in/mowarson-developer-298404302/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+        <small>© <span data-current-year>2026</span> Mowarson Developer. All rights reserved.</small>
+      </div>
+    </footer>
+  </body>
+</html>

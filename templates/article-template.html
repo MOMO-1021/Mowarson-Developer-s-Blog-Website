@@ -1,0 +1,304 @@
+<!doctype html>
+<!--
+  ARTICLE TEMPLATE — BRAND POSITIONING & MESSAGING
+  Duplicate this file into ../articles/your-article-slug.html before editing.
+  Replace every {{PLACEHOLDER}}, edit the JSON-LD values, and remove this comment
+  before publishing. Replace the demo cover image with a real article image.
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="{{META_DESCRIPTION — concise, specific benefit, around 150 characters}}" />
+    <meta name="theme-color" content="#f8fafc" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="{{ARTICLE_TITLE}} — Mowarson Developer" />
+    <meta property="og:description" content="{{SOCIAL_DESCRIPTION}}" />
+    <meta property="og:image" content="{{ABSOLUTE_SOCIAL_IMAGE_URL}}" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{{ARTICLE_TITLE}} — Mowarson Developer</title>
+    <!-- Add a canonical link to {{ABSOLUTE_ARTICLE_URL}} after the production domain is assigned. -->
+    <link rel="icon" href="../assets/favicon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="../style.css" />
+    <script src="../script.js" defer></script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "{{ARTICLE_TITLE}}",
+        "description": "{{META_DESCRIPTION}}",
+        "image": "{{ABSOLUTE_SOCIAL_IMAGE_URL}}",
+        "author": { "@type": "Person", "name": "Mowarson", "url": "https://mowarsondeveloper.netlify.app/about.html" },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Mowarson Developer",
+          "logo": { "@type": "ImageObject", "url": "https://mowarsondeveloper.netlify.app/assets/favicon.png" }
+        },
+        "datePublished": "{{YYYY-MM-DD}}",
+        "dateModified": "{{YYYY-MM-DD}}",
+        "mainEntityOfPage": "{{ABSOLUTE_ARTICLE_URL}}"
+      }
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a class="logo" href="../index.html" aria-label="Mowarson Developer home">Mowarson<span>Developer</span></a>
+        <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primary-navigation">
+          <span></span><span></span><span></span>
+        </button>
+        <nav class="site-nav" id="primary-navigation" aria-label="Main navigation">
+          <a class="current" href="../index.html">Journal</a>
+          <a href="../index.html#articles">Articles</a>
+          <a href="https://mowarsondeveloper.netlify.app/" target="_blank" rel="noopener noreferrer">Portfolio <span aria-hidden="true">↗</span></a>
+          <a class="nav-cta" href="https://mowarsondeveloper.netlify.app/contact.html" target="_blank" rel="noopener noreferrer">Let's talk</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="container">
+      <nav class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="../index.html">Journal</a><span aria-hidden="true">/</span>
+        <a href="../index.html#articles">Brand Positioning &amp; Messaging</a><span aria-hidden="true">/</span>
+        <span aria-current="page">{{SHORT_ARTICLE_TITLE}}</span>
+      </nav>
+
+      <div class="post-layout">
+        <article class="post">
+          <header class="post-header">
+            <!-- Choose the closest archive category: Web design, Growth & marketing, or Strategy. -->
+            <span class="topic-tag">{{CATEGORY}}</span>
+            <h1>{{ARTICLE_TITLE}}</h1>
+            <p class="post-dek">{{ARTICLE_DEK — explain the reader, problem, and useful outcome in 1–2 sentences}}</p>
+            <div class="post-meta">
+              <img src="../assets/mowarson.jpg" alt="" width="36" height="36" />
+              <span>By <strong>Mowarson</strong></span><span aria-hidden="true">·</span>
+              <time datetime="{{YYYY-MM-DD}}">{{MONTH DD, YYYY}}</time><span aria-hidden="true">·</span>
+              <span>{{READING_TIME}} min read</span>
+            </div>
+            <div class="share-links" aria-label="Share this article">
+              <a href="https://www.linkedin.com/sharing/share-offsite/?url={{URL_ENCODED_ARTICLE_URL}}" target="_blank" rel="noopener noreferrer">Share on LinkedIn ↗</a>
+              <a href="https://twitter.com/intent/tweet?url={{URL_ENCODED_ARTICLE_URL}}&amp;text={{URL_ENCODED_ARTICLE_TITLE}}" target="_blank" rel="noopener noreferrer">Share on X ↗</a>
+              <a href="mailto:?subject={{URL_ENCODED_ARTICLE_TITLE}}&amp;body={{URL_ENCODED_ARTICLE_URL}}">Email article ↗</a>
+            </div>
+          </header>
+
+          <figure class="post-hero">
+            <!-- Use a relevant, optimized image; write alt text for its information, not its appearance. -->
+            <img class="post-cover" src="../assets/mowarson.jpg" alt="{{HERO_IMAGE_ALT}}" width="1200" height="675" />
+            <figcaption>{{IMAGE_CAPTION_OR_REMOVE_FIGCAPTION}}</figcaption>
+          </figure>
+
+          <div class="post-content">
+            <section class="post-summary" aria-labelledby="summary-heading">
+              <h2 id="summary-heading">The short version</h2>
+              <p>{{ANSWER_FIRST — state the central answer or recommendation clearly in 2–4 sentences. Make this useful to someone who reads only this box.}}</p>
+            </section>
+
+            <nav class="toc-box" aria-label="Article contents">
+              <h2>In this article</h2>
+              <ol>
+                <li><a href="#why-this-matters">Why this matters</a></li>
+                <li><a href="#positioning-and-messaging">Positioning vs. messaging</a></li>
+                <li><a href="#audience-context">Start with audience context</a></li>
+                <li><a href="#distinctive-value">Find your distinctive value</a></li>
+                <li><a href="#positioning-framework">Build the positioning framework</a></li>
+                <li><a href="#turn-it-into-messaging">Turn strategy into messaging</a></li>
+                <li><a href="#worked-example">Worked example</a></li>
+                <li><a href="#common-mistakes">Common mistakes</a></li>
+                <li><a href="#implementation-checklist">Implementation checklist</a></li>
+                <li><a href="#frequently-asked-questions">FAQs</a></li>
+              </ol>
+            </nav>
+
+            <section aria-labelledby="takeaways-heading">
+              <h2 id="takeaways-heading">Key takeaways</h2>
+              <div class="takeaway-grid">
+                <div class="takeaway-item"><strong>01 · Be specific</strong><p>{{TAKEAWAY_1 — one useful, memorable principle}}</p></div>
+                <div class="takeaway-item"><strong>02 · Prove it</strong><p>{{TAKEAWAY_2 — what evidence or experience supports the claim}}</p></div>
+                <div class="takeaway-item"><strong>03 · Stay consistent</strong><p>{{TAKEAWAY_3 — how the idea should guide customer touchpoints}}</p></div>
+                <div class="takeaway-item"><strong>04 · Keep testing</strong><p>{{TAKEAWAY_4 — what to learn from customers and market feedback}}</p></div>
+              </div>
+            </section>
+
+            <p>{{OPENING — begin with a recognizable customer situation, tension, or misconception. Explain why this topic matters now and what the reader will be able to do after reading. Avoid a generic dictionary opening.}}</p>
+
+            <section id="why-this-matters">
+              <h2>Why brand positioning and messaging matter</h2>
+              <p>{{Describe the practical business consequence: when customers cannot understand the difference, they compare only price; when language is vague, marketing feels interchangeable. Support the point with a sourced fact, observation, or transparent first-hand example.}}</p>
+              <p>{{Set useful boundaries. Explain what this article does and does not cover, who should use it, and at what stage.}}</p>
+              <div class="post-callout"><p><strong>Core idea:</strong> {{A short, quotable point that captures the value of the section.}}</p></div>
+            </section>
+
+            <section id="positioning-and-messaging">
+              <h2>Brand positioning is not the same as messaging</h2>
+              <p>{{Define both ideas in plain language. Positioning is the strategic choice about the audience, problem, alternative, and distinct value. Messaging is how that choice is expressed through words across the brand experience. Explain how they work together without treating a tagline as the entire strategy.}}</p>
+              <div class="comparison-grid">
+                <div class="comparison-card"><h3>Positioning answers</h3><p>{{Who is this for? What need does it serve? What is the relevant alternative? Why should the audience choose it?}}</p></div>
+                <div class="comparison-card"><h3>Messaging expresses</h3><p>{{What should people understand, believe, remember, and do? Which proof and language make the position credible?}}</p></div>
+              </div>
+              <p>{{Give a concise distinction or example that makes the relationship easy to remember.}}</p>
+            </section>
+
+            <section id="audience-context">
+              <h2>1. Start with the audience and their context</h2>
+              <p>{{Show how to identify a meaningful audience beyond a broad demographic label. Describe their situation, desired progress, constraints, anxieties, decision triggers, and the words they use to explain the problem.}}</p>
+              <h3>Research questions to ask</h3>
+              <ul>
+                <li>{{What prompted you to look for a solution now?}}</li>
+                <li>{{What have you tried already, and what was missing?}}</li>
+                <li>{{What would make you trust or reject a provider?}}</li>
+                <li>{{How do you describe the problem in your own words?}}</li>
+              </ul>
+              <p>{{Explain how to gather evidence ethically: customer interviews, sales conversations, support questions, reviews, and observed behavior. Separate direct evidence from assumptions.}}</p>
+            </section>
+
+            <section id="distinctive-value">
+              <h2>2. Find a distinctive value customers can recognize</h2>
+              <p>{{Explain that a differentiator is valuable when customers care about it, notice it in the alternatives, and believe the brand can deliver it. Distinguish a real advantage from a generic claim such as “quality,” “innovative,” or “customer-first.”}}</p>
+              <ol>
+                <li><strong>List the alternatives.</strong> {{Include doing nothing, an in-house approach, or a different category—not only direct competitors.}}</li>
+                <li><strong>Identify the trade-offs.</strong> {{Describe what each alternative does well and where customers still experience friction.}}</li>
+                <li><strong>Connect strengths to outcomes.</strong> {{Translate internal capabilities into customer value.}}</li>
+                <li><strong>Check the evidence.</strong> {{Name the experience, process, proof, or behavior that makes the claim credible.}}</li>
+              </ol>
+              <blockquote>{{Insert a carefully sourced customer insight, short interview quote with permission, or clearly labeled observation. Never invent attribution or statistics.}}</blockquote>
+            </section>
+
+            <section id="positioning-framework">
+              <h2>3. Write a usable positioning statement</h2>
+              <p>{{Introduce this as an internal clarity tool, not finished advertising copy. Explain each part of the framework and why it helps teams make consistent choices.}}</p>
+              <div class="framework-card">
+                <p>A practical positioning framework</p>
+                <blockquote>For <strong>{{AUDIENCE}}</strong> who need <strong>{{NEED / PROBLEM}}</strong>, <strong>{{BRAND / OFFER}}</strong> is the <strong>{{CATEGORY / FRAME OF REFERENCE}}</strong> that <strong>{{DISTINCTIVE VALUE}}</strong>, because <strong>{{REASON TO BELIEVE}}</strong>.</blockquote>
+              </div>
+              <p>{{Explain how to challenge the draft: Is the audience narrow enough to guide decisions? Is the need important? Is the alternative real? Is the difference relevant and defensible? Can the team prove it?}}</p>
+              <div class="post-callout"><p><strong>Important:</strong> {{Explain that this statement is a strategic filter; it usually should not be pasted onto a homepage unchanged.}}</p></div>
+            </section>
+
+            <section id="turn-it-into-messaging">
+              <h2>4. Turn the strategy into a messaging hierarchy</h2>
+              <p>{{Explain how a positioning decision becomes repeatable communication. A strong hierarchy gives the team a main promise, supporting pillars, proof, and a consistent voice rather than a pile of disconnected slogans.}}</p>
+              <h3>Build the message from the top down</h3>
+              <ul>
+                <li><strong>Core promise:</strong> {{The clearest customer-relevant value.}}</li>
+                <li><strong>Supporting messages:</strong> {{Two or three reasons the promise matters and what makes it distinct.}}</li>
+                <li><strong>Proof points:</strong> {{Demonstrable capabilities, outcomes, process details, or customer evidence.}}</li>
+                <li><strong>Voice principles:</strong> {{Three or four useful behavioral traits, each with a “do” and “avoid” example.}}</li>
+                <li><strong>Next step:</strong> {{A natural action for the audience at this stage of their decision.}}</li>
+              </ul>
+              <p>{{Describe how to adapt emphasis for the homepage, service pages, proposals, social content, and sales conversations without changing the underlying position.}}</p>
+            </section>
+
+            <section id="worked-example">
+              <h2>Worked example: from vague claim to clear position</h2>
+              <p>{{Introduce a fictional or anonymized example. Label it clearly; do not imply a client result unless you have permission and evidence. Keep the example relevant to the audience of this article.}}</p>
+              <div class="example-card">
+                <h3>{{Example brand or scenario}}</h3>
+                <div class="comparison-grid">
+                  <div class="comparison-card is-before"><h3>Before</h3><p>{{A generic claim with no audience, context, meaningful difference, or proof.}}</p></div>
+                  <div class="comparison-card is-after"><h3>After</h3><p>{{A clearer version that names a particular audience and need, articulates a relevant benefit, and points toward credible proof.}}</p></div>
+                </div>
+                <p><strong>Why it is clearer:</strong> {{Explain the strategic choices; do not suggest that one sentence alone guarantees conversion.}}</p>
+              </div>
+            </section>
+
+            <section id="common-mistakes">
+              <h2>Common positioning and messaging mistakes</h2>
+              <ul>
+                <li><strong>Trying to appeal to everyone.</strong> {{Explain the cost of a position so broad it cannot guide a decision.}}</li>
+                <li><strong>Confusing a feature with customer value.</strong> {{Show how to connect what the product does to what changes for the customer.}}</li>
+                <li><strong>Claiming uniqueness without evidence.</strong> {{Explain how proof and experience support credibility.}}</li>
+                <li><strong>Writing the tagline before the strategy.</strong> {{Explain why memorable words cannot compensate for unclear choices.}}</li>
+                <li><strong>Changing the story in every channel.</strong> {{Show how inconsistent claims create doubt and how a message hierarchy helps.}}</li>
+                <li><strong>Treating the work as permanent.</strong> {{Explain how to revisit assumptions when the audience, offer, or market changes.}}</li>
+              </ul>
+            </section>
+
+            <section id="implementation-checklist">
+              <h2>A practical implementation checklist</h2>
+              <p>{{Explain how to apply the work in a manageable sequence. Name who should review it, what to update first, and how the team will learn from real customer responses.}}</p>
+              <ul class="checklist">
+                <li>{{We can name the priority audience and the situation they are in.}}</li>
+                <li>{{Our position addresses a meaningful need and a real alternative.}}</li>
+                <li>{{Our key difference is relevant, recognizable, and supportable.}}</li>
+                <li>{{Our core message is understandable without internal jargon.}}</li>
+                <li>{{Our proof points substantiate our most important claims.}}</li>
+                <li>{{Our homepage, service pages, and sales materials tell a coherent story.}}</li>
+                <li>{{We have a simple way to gather feedback and revisit assumptions.}}</li>
+              </ul>
+              <div class="post-callout"><p><strong>Suggested next step:</strong> {{Give the reader one small action to take this week, such as interviewing three customers or rewriting one high-priority page.}}</p></div>
+            </section>
+
+            <section id="frequently-asked-questions">
+              <h2>Frequently asked questions</h2>
+              <div class="faq-list">
+                <details><summary>{{FAQ 1 — a real question readers ask}}</summary><p>{{Answer directly first, then add a short explanation or useful caveat.}}</p></details>
+                <details><summary>{{FAQ 2 — a question about timing, scope, or process}}</summary><p>{{Give a practical answer. Avoid universal promises when the answer depends on context.}}</p></details>
+                <details><summary>{{FAQ 3 — a question about positioning, messaging, or brand refreshes}}</summary><p>{{Answer in plain language and link to a relevant article if one exists.}}</p></details>
+              </div>
+            </section>
+
+            <section id="conclusion">
+              <h2>Make the brand easier to understand and choose</h2>
+              <p>{{Synthesize the central lesson in fresh words. Remind the reader what to prioritize, what to avoid, and why clarity must be supported by real customer value. Do not introduce a new major argument in the conclusion.}}</p>
+              <p>{{Finish with a specific, low-friction next step or a reflective question that invites the reader to apply the framework.}}</p>
+            </section>
+
+            <section class="author-box" aria-label="About the author">
+              <img src="../assets/mowarson.jpg" alt="" width="58" height="58" />
+              <div>
+                <h2>About Mowarson</h2>
+                <p>{{Write a short, relevant author bio. Explain your experience with this subject without overstating credentials. Keep it consistent with the portfolio biography.}}</p>
+                <a href="https://mowarsondeveloper.netlify.app/about.html" target="_blank" rel="noopener noreferrer">More about Mowarson ↗</a>
+              </div>
+            </section>
+
+            <section class="related-posts" aria-labelledby="related-heading">
+              <h2 id="related-heading">Continue reading</h2>
+              <div class="related-post-grid">
+                <div class="related-post-card"><span>{{RELATED CATEGORY}}</span><a href="{{RELATED_POST_1_URL}}">{{RELATED_POST_1_TITLE}}</a></div>
+                <div class="related-post-card"><span>{{RELATED CATEGORY}}</span><a href="{{RELATED_POST_2_URL}}">{{RELATED_POST_2_TITLE}}</a></div>
+              </div>
+            </section>
+
+            <div class="post-end">
+              <p>{{FINAL CTA — invite a relevant action without pressure.}}</p>
+              <a class="button" href="https://mowarsondeveloper.netlify.app/contact.html" target="_blank" rel="noopener noreferrer">Let's talk <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <aside class="post-aside" aria-label="On this page">
+          <h2>On this page</h2>
+          <a href="#why-this-matters">Why it matters</a>
+          <a href="#positioning-framework">Positioning framework</a>
+          <a href="#turn-it-into-messaging">Messaging hierarchy</a>
+          <a href="#worked-example">Worked example</a>
+          <a href="#implementation-checklist">Implementation checklist</a>
+          <a href="#frequently-asked-questions">FAQs</a>
+          <a href="../index.html#articles">Back to all articles →</a>
+        </aside>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <a class="logo logo-footer" href="../index.html">Mowarson<span>Developer</span></a>
+        <p>Thoughtful websites. Clearer brands. Better growth.</p>
+        <div class="footer-links">
+          <a href="https://mowarsondeveloper.netlify.app/" target="_blank" rel="noopener noreferrer">Portfolio</a>
+          <a href="https://mowarsondeveloper.netlify.app/contact.html" target="_blank" rel="noopener noreferrer">Contact</a>
+          <a href="https://www.instagram.com/mowarson_developer/" target="_blank" rel="noopener noreferrer">Instagram</a>
+          <a href="https://www.linkedin.com/in/mowarson-developer-298404302/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        </div>
+        <small>© <span data-current-year>2026</span> Mowarson Developer. All rights reserved.</small>
+      </div>
+    </footer>
+  </body>
+</html>
