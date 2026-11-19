@@ -28,8 +28,8 @@ posts to the repository.
    Copy its client ID and client secret to `GITHUB_ID` and `GITHUB_SECRET`.
 2. Create a fine-grained personal access token for this repository only. Grant
    **Contents: Read and write** permission, then set it as `GITHUB_TOKEN`.
-3. Set `GITHUB_OWNER=mowarson-developer`, `GITHUB_REPO=Mowarson-Developer-s-Blog-Website`,
-   `GITHUB_BRANCH=main`, and `ADMIN_GITHUB_USERNAME=mowarson-developer`.
+3. Set `GITHUB_OWNER=MOMO-1021`, `GITHUB_REPO=Mowarson-Developer-s-Blog-Website`,
+   `GITHUB_BRANCH=main`, and `ADMIN_GITHUB_USERNAME=MOMO-1021`.
 4. Set `NEXTAUTH_URL` to the full admin auth endpoint (for example
    `https://mowarson-developer-s-blog-website.netlify.app/api/admin-auth`) and
    `NEXTAUTH_SECRET` to a long random secret. To generate one in PowerShell, run:
