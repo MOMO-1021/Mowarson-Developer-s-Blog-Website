@@ -30,11 +30,9 @@ export function SiteHeader() {
           id="primary-navigation"
           aria-label="Main navigation"
         >
-          <Link href="/#about" onClick={() => setOpen(false)}>About</Link>
-          <Link href="/#services" onClick={() => setOpen(false)}>Services</Link>
-          <Link href="/#articles" onClick={() => setOpen(false)}>Blog</Link>
-          <Link href="/#contact" onClick={() => setOpen(false)}>Contact</Link>
-          <Link className="nav-cta" href="/#pricing" onClick={() => setOpen(false)}>Pay Online</Link>
+          <Link href="/#articles" onClick={() => setOpen(false)}>
+            Articles
+          </Link>
           <ReaderSignOut />
         </nav>
       </div>
