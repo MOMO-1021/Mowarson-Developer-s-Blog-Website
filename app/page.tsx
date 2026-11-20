@@ -3,6 +3,7 @@ import { ArticleBrowser, type ArticleCardData } from "./components/article-brows
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
 import { getPublishedPosts } from "@/lib/posts";
+import { createBlogSchema } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
 
@@ -32,6 +33,12 @@ export default async function HomePage() {
       <a className="skip-link" href="#main">
         Skip to content
       </a>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(createBlogSchema(authoredPosts)),
+        }}
+      />
       <SiteHeader />
       <main id="main">
         <section className="hero">

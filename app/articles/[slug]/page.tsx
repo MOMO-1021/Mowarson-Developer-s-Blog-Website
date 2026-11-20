@@ -7,6 +7,7 @@ import { ArticleShare } from "@/app/components/article-share";
 import { SiteFooter } from "@/app/components/site-footer";
 import { SiteHeader } from "@/app/components/site-header";
 import { getPublishedPost } from "@/lib/posts";
+import { createArticleSchema, getSiteUrl } from "@/lib/seo";
 
 interface ArticlePageProps {
   params: Promise<{ slug: string }>;
@@ -20,7 +21,21 @@ export async function generateMetadata({
   const { slug } = await params;
   const post = await getPublishedPost(slug);
   return post
-    ? { title: post.title, description: post.excerpt }
+    ? {
+        title: post.title,
+        description: post.excerpt,
+        alternates: {
+          canonical: `${getSiteUrl()}/articles/${post.slug}`,
+        },
+        openGraph: {
+          type: "article",
+          title: post.title,
+          description: post.excerpt,
+          url: `${getSiteUrl()}/articles/${post.slug}`,
+          publishedTime: post.date,
+          authors: ["Mowarson"],
+        },
+      }
     : { title: "Article not found" };
 }
 
@@ -41,6 +56,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(createArticleSchema(post)),
+        }}
+      />
       <SiteHeader />
       <main className="container">
         <nav className="breadcrumbs" aria-label="Breadcrumb">

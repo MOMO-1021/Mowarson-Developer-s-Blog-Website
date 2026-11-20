@@ -1,10 +1,13 @@
 import type { MetadataRoute } from "next";
 import { getPublishedPosts } from "@/lib/posts";
+import { getSiteUrl } from "@/lib/seo";
 
-const siteUrl = "https://mowarsondeveloper-blog-website.netlify.app";
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const posts = await getPublishedPosts();
+  const siteUrl = getSiteUrl();
 
   return [
     {
