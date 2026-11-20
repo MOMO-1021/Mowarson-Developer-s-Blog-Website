@@ -49,7 +49,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <span aria-current="page">{post.title}</span>
         </nav>
         <div className="post-layout">
-          <article className="post">
+          <article className="post" id="article-top">
             <span className="topic-tag">{categoryLabel}</span>
             <h1>{post.title}</h1>
             <p className="post-dek">{post.excerpt}</p>

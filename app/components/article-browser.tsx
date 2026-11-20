@@ -103,7 +103,7 @@ export function ArticleBrowser({ posts }: { posts: ArticleCardData[] }) {
               <p>{post.excerpt}</p>
               <div className="card-bottom">
                 <span>{formatDate(post.date)}</span>
-                <Link className="read-link" href={post.href}>
+                <Link className="read-link" href={`${post.href}#article-top`}>
                   Read article <span aria-hidden="true">→</span>
                 </Link>
               </div>
