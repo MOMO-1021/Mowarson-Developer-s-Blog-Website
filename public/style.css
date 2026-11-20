@@ -309,3 +309,49 @@ button { color: inherit; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
 }
+
+/* Marketing homepage */
+.marketing-hero { padding: 112px 0 86px; border-radius: 0; background: linear-gradient(135deg, #f8fafc 0%, #eef2f6 100%); }
+.marketing-hero .hero-inner { display: block; }
+.marketing-hero .hero-copy { max-width: 1150px; }
+.marketing-hero h1 { max-width: 900px; font-size: clamp(3rem, 7vw, 4.7rem); text-transform: none; }
+.marketing-hero .eyebrow { display: inline-flex; padding: 8px 14px; border: 1px solid #dfe7f1; border-radius: 999px; background: #ffffffaa; color: #1e3a68; letter-spacing: 0; text-transform: none; }
+.marketing-hero .hero-description { max-width: 680px; font-size: 1.18rem; }
+.hero-value-bundle { display: flex; align-items: center; gap: 14px; max-width: 1150px; margin: 28px 0 30px; padding: 13px 18px; border: 1px solid #e3eaf3; border-radius: 999px; background: #fff; color: #1e3a68; font-size: .9rem; box-shadow: 0 10px 24px -24px #0f172a; }
+.hero-value-bundle strong, .recommended { padding: 6px 11px; border-radius: 999px; background: var(--ink); color: #fff; font-size: .7rem; letter-spacing: .04em; white-space: nowrap; }
+.hero-actions { display: flex; flex-wrap: wrap; gap: 16px; }
+.button-secondary { border: 2px solid var(--blue); background: transparent; box-shadow: none; color: var(--blue); }
+.button-secondary:hover { background: var(--blue-tint); color: var(--blue-dark); }
+.services-section, .pricing-section { padding: 88px 0 30px; }
+.marketing-section-heading { max-width: 780px; margin: 0 auto 42px; text-align: center; }
+.marketing-section-heading .eyebrow { justify-content: center; }
+.marketing-section-heading h2 { margin: 0; color: var(--ink); font-size: clamp(2rem, 4vw, 2.55rem); line-height: 1.2; letter-spacing: -.05em; }
+.marketing-section-heading > p:not(.eyebrow) { margin: 16px auto 0; color: var(--muted); font-size: 1.05rem; }
+.service-grid, .pricing-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+.service-card, .price-card { position: relative; padding: 34px; border: 1px solid #e3eaf2; border-radius: 24px; background: #fff; box-shadow: 0 18px 34px -32px #0f172a55; }
+.service-card h3, .price-card h3 { margin: 24px 0 15px; color: var(--heading); font-size: 1.45rem; line-height: 1.25; }
+.service-card > p, .price-card > p { margin: 0; color: var(--muted); font-size: 1.02rem; }
+.service-note { margin-top: 25px; padding: 16px; border: 1px solid #e1e8f1; border-radius: 14px; background: #f8fafc; color: #334155; font-size: .9rem; }
+.neutral-tag { background: #f1f5f9; color: #475569; }
+.pricing-section { padding-top: 90px; }
+.price-card { padding: 38px 40px; }
+.price-card h3 { margin-top: 0; }
+.price { margin: 38px 0 22px; color: var(--ink); font-size: 3.2rem; font-weight: 800; letter-spacing: -.07em; }
+.price small { color: var(--muted); font-size: .95rem; font-weight: 400; letter-spacing: 0; }
+.price-card ul { display: grid; gap: 12px; margin: 0 0 32px; padding: 0; list-style: none; color: var(--body); }
+.price-card li { padding-left: 27px; position: relative; }
+.price-card li::before { position: absolute; left: 0; color: var(--blue); content: "✓"; font-weight: 800; }
+.price-card .button { width: 100%; }
+.featured-price { border-color: #6d9cff; }
+.featured-price .recommended { position: absolute; top: -17px; left: 50%; transform: translateX(-50%); }
+.portfolio-callout { margin-top: 70px; }
+
+@media (max-width: 680px) {
+  .marketing-hero { padding: 68px 0 58px; }
+  .marketing-hero h1 { font-size: clamp(2.6rem, 12vw, 3.7rem); }
+  .hero-value-bundle { align-items: flex-start; flex-direction: column; border-radius: 20px; }
+  .service-grid, .pricing-grid { grid-template-columns: 1fr; gap: 18px; }
+  .services-section, .pricing-section { padding-top: 60px; }
+  .service-card, .price-card { padding: 26px 22px; }
+  .price { font-size: 2.7rem; }
+}
