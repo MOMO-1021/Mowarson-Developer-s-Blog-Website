@@ -7,11 +7,12 @@ export default readerAuth.middleware({
     "/api/admin",
     "/api/admin-auth",
     "/googlecc2a4d53d85ab3d8.html",
+    "/sitemap.xml",
   ],
 });
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|assets/|style\\.css|script\\.js|googlecc2a4d53d85ab3d8\\.html).*)",
+    "/((?!_next/static|_next/image|favicon.ico|assets/|style\\.css|script\\.js|googlecc2a4d53d85ab3d8\\.html|sitemap\\.xml).*)",
   ],
 };
