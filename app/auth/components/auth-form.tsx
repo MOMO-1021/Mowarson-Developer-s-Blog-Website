@@ -2,7 +2,18 @@
 
 import Link from "next/link";
 import { FormEvent, useState } from "react";
-import { readerAuthClient } from "@/lib/reader-auth/client";
+import { readerAuthClient, setReaderSessionHint } from "@/lib/reader-auth/client";
+
+function getSafeRedirectTarget(): string {
+  if (typeof window === "undefined") {
+    return "/";
+  }
+  const target = new URLSearchParams(window.location.search).get("redirectTo");
+  if (!target || !target.startsWith("/") || target.startsWith("//")) {
+    return "/";
+  }
+  return target;
+}
 
 type AuthView = "sign-in" | "sign-up" | "forgot-password" | "reset-password";
 
@@ -67,7 +78,8 @@ export function AuthForm({ view, token, invalidToken = false }: AuthFormProps) {
         if (result.error) {
           throw new Error(result.error.message || "Could not sign in.");
         }
-        window.location.assign("/");
+        setReaderSessionHint();
+        window.location.assign(getSafeRedirectTarget());
       } else if (view === "sign-up") {
         const result = await readerAuthClient.signUp.email({
           name: name.trim(),
@@ -77,7 +89,8 @@ export function AuthForm({ view, token, invalidToken = false }: AuthFormProps) {
         if (result.error) {
           throw new Error(result.error.message || "Could not create your account.");
         }
-        window.location.assign("/");
+        setReaderSessionHint();
+        window.location.assign(getSafeRedirectTarget());
       } else if (view === "forgot-password") {
         const result = await readerAuthClient.requestPasswordReset({
           email,

@@ -1,7 +1,7 @@
 import type { BlogPost } from "@/lib/posts";
 
 const defaultSiteUrl =
-  "https://mowarson-developer-s-blog-website.netlify.app";
+  "https://mowarsondeveloper-blog-website.netlify.app";
 
 export function getSiteUrl(): string {
   return (

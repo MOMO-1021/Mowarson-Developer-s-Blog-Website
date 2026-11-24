@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "../style.css";
 import "./app.css";
-import { Providers } from "./providers";
-import { createWebsiteSchema } from "@/lib/seo";
+import { createWebsiteSchema, getSiteUrl } from "@/lib/seo";
 
-const siteUrl = "https://mowarson-developer-s-blog-website.netlify.app";
+// next/font automatically self-hosts Inter — no external network request at runtime.
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || siteUrl,
-  ),
+  metadataBase: new URL(getSiteUrl()),
   title: {
     default: "The Journal — Mowarson Developer",
     template: "%s — Mowarson Developer",
@@ -31,7 +34,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={inter.variable}>
       <body>
         <script
           type="application/ld+json"
@@ -39,7 +42,7 @@ export default function RootLayout({
             __html: JSON.stringify(createWebsiteSchema()),
           }}
         />
-        <Providers>{children}</Providers>
+        {children}
       </body>
     </html>
   );

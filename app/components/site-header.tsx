@@ -1,11 +1,41 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReaderSignOut } from "@/app/components/reader-sign-out";
+import { clearReaderSessionHint, hasReaderSessionHint } from "@/lib/reader-auth/client";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const [signedIn, setSignedIn] = useState(false);
+
+  useEffect(() => {
+    if (!hasReaderSessionHint()) {
+      return;
+    }
+
+    let cancelled = false;
+    fetch("/api/reader-session", { cache: "no-store" })
+      .then((response) => (response.ok ? response.json() : { signedIn: false }))
+      .then((data: { signedIn?: boolean }) => {
+        if (cancelled) {
+          return;
+        }
+        if (data.signedIn) {
+          setSignedIn(true);
+        } else {
+          clearReaderSessionHint();
+          setSignedIn(false);
+        }
+      })
+      .catch(() => {
+        // Keep header non-blocking if session check fails transiently.
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <header className="site-header">
@@ -33,7 +63,13 @@ export function SiteHeader() {
           <Link href="/#articles" onClick={() => setOpen(false)}>
             Articles
           </Link>
-          <ReaderSignOut />
+          {signedIn ? (
+            <ReaderSignOut onSignedOut={() => setSignedIn(false)} />
+          ) : (
+            <Link className="nav-cta" href="/auth/sign-in" onClick={() => setOpen(false)}>
+              Sign in
+            </Link>
+          )}
         </nav>
       </div>
     </header>

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import ReactMarkdown from "react-markdown";
@@ -6,14 +7,17 @@ import { ArticleComments } from "@/app/components/article-comments";
 import { ArticleShare } from "@/app/components/article-share";
 import { SiteFooter } from "@/app/components/site-footer";
 import { SiteHeader } from "@/app/components/site-header";
-import { getPublishedPost } from "@/lib/posts";
+import { getPublishedPost, getPublishedPosts } from "@/lib/posts";
 import { createArticleSchema, getSiteUrl } from "@/lib/seo";
 
 interface ArticlePageProps {
   params: Promise<{ slug: string }>;
 }
 
-export const dynamic = "force-dynamic";
+export async function generateStaticParams() {
+  const posts = await getPublishedPosts();
+  return posts.map((post) => ({ slug: post.slug }));
+}
 
 export async function generateMetadata({
   params,
@@ -75,7 +79,13 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <h1>{post.title}</h1>
             <p className="post-dek">{post.excerpt}</p>
             <div className="post-meta">
-              <img src="/assets/mowarson.jpg" alt="" width="36" height="36" />
+              <Image
+                src="/assets/mowarson.jpg"
+                alt=""
+                width={36}
+                height={36}
+                priority
+              />
               <span>By <strong>Mowarson</strong></span>
               <span aria-hidden="true">·</span>
               <time dateTime={post.date}>{displayDate}</time>

@@ -2,9 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { readerAuthClient } from "@/lib/reader-auth/client";
+import { clearReaderSessionHint, readerAuthClient } from "@/lib/reader-auth/client";
 
-export function ReaderSignOut() {
+export function ReaderSignOut({ onSignedOut }: { onSignedOut?: () => void }) {
   const router = useRouter();
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
@@ -17,7 +17,8 @@ export function ReaderSignOut() {
       if (result.error) {
         throw new Error(result.error.message || "Could not sign out.");
       }
-      router.replace("/auth/sign-in");
+      clearReaderSessionHint();
+      onSignedOut?.();
       router.refresh();
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Could not sign out.");
