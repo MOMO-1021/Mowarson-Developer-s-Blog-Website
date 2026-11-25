@@ -2,6 +2,7 @@
 
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
+import KanbanBoard from "../components/kanban-board";
 
 interface AdminPost {
   slug: string;
@@ -59,8 +60,11 @@ const emptyPost = (): AdminPost => ({
   body: starterBody,
 });
 
+type ActiveTab = "articles" | "kanban";
+
 export default function AdminPage() {
   const { data: session, status } = useSession();
+  const [activeTab, setActiveTab] = useState<ActiveTab>("articles");
   const [posts, setPosts] = useState<AdminPost[]>([]);
   const [post, setPost] = useState<AdminPost>(emptyPost);
   const [editing, setEditing] = useState(false);
@@ -216,175 +220,201 @@ export default function AdminPage() {
         </div>
       </div>
 
-      <div className="admin-main">
-        <div className="admin-heading">
-          <div>
-            <p className="eyebrow"><span className="eyebrow-dot" /> Writing dashboard</p>
-            <h1>Your articles</h1>
-            <p>Write a post, save a draft, or publish it to your blog.</p>
-          </div>
-          <button className="button" type="button" onClick={startNewPost}>
-            + New article
-          </button>
-        </div>
+      {/* Tab Navigation */}
+      <div className="admin-tabs">
+        <button
+          className={`admin-tab${activeTab === "articles" ? " is-active" : ""}`}
+          onClick={() => setActiveTab("articles")}
+        >
+          ✍️ Articles
+        </button>
+        <button
+          className={`admin-tab${activeTab === "kanban" ? " is-active" : ""}`}
+          onClick={() => setActiveTab("kanban")}
+        >
+          📋 Kanban Board
+        </button>
+      </div>
 
-        {error && <p className="admin-alert is-error" role="alert">{error}</p>}
-        {message && <p className="admin-alert is-success" role="status">{message}</p>}
-
-        <section className="admin-card" aria-labelledby="article-list-heading">
-          <div className="admin-card-heading">
-            <h2 id="article-list-heading">Posts in your GitHub repository</h2>
-            <button className="text-button" type="button" onClick={() => void loadPosts()} disabled={loadingPosts}>
-              {loadingPosts ? "Refreshing…" : "Refresh"}
+      {/* Articles Tab */}
+      {activeTab === "articles" && (
+        <div className="admin-main">
+          <div className="admin-heading">
+            <div>
+              <p className="eyebrow"><span className="eyebrow-dot" /> Writing dashboard</p>
+              <h1>Your articles</h1>
+              <p>Write a post, save a draft, or publish it to your blog.</p>
+            </div>
+            <button className="button" type="button" onClick={startNewPost}>
+              + New article
             </button>
           </div>
-          {loadingPosts ? (
-            <p className="admin-empty">Loading your articles…</p>
-          ) : posts.length ? (
-            <div className="admin-post-list">
-              {posts.map((item) => (
-                <article className="admin-post-row" key={item.slug}>
-                  <div>
-                    <span className={`status-pill${item.draft ? " is-draft" : " is-published"}`}>
-                      {item.draft ? "Draft" : "Published"}
-                    </span>
-                    <h3>{item.title}</h3>
-                    <p>{item.excerpt}</p>
-                  </div>
-                  <div className="admin-post-actions">
-                    <button
-                      className="button button-outline"
-                      type="button"
-                      onClick={() => editPost(item)}
-                      disabled={Boolean(deletingSlug)}
-                    >
-                      Edit
-                    </button>
-                    <button
-                      className="button button-danger"
-                      type="button"
-                      onClick={() => void deletePost(item)}
-                      disabled={saving || Boolean(deletingSlug)}
-                    >
-                      {deletingSlug === item.slug ? "Deleting…" : "Delete"}
-                    </button>
-                  </div>
-                </article>
-              ))}
-            </div>
-          ) : (
-            <p className="admin-empty">
-              No dashboard articles yet. Choose <strong>New article</strong> to start writing.
-            </p>
-          )}
-        </section>
 
-        {showEditor && (
-          <section className="admin-card admin-editor" aria-labelledby="editor-heading">
+          {error && <p className="admin-alert is-error" role="alert">{error}</p>}
+          {message && <p className="admin-alert is-success" role="status">{message}</p>}
+
+          <section className="admin-card" aria-labelledby="article-list-heading">
             <div className="admin-card-heading">
-              <div>
-                <p className="eyebrow"><span className="eyebrow-dot" /> Article editor</p>
-                <h2 id="editor-heading">{editing ? "Edit article" : "Write a new article"}</h2>
+              <h2 id="article-list-heading">Posts in your GitHub repository</h2>
+              <button className="text-button" type="button" onClick={() => void loadPosts()} disabled={loadingPosts}>
+                {loadingPosts ? "Refreshing…" : "Refresh"}
+              </button>
+            </div>
+            {loadingPosts ? (
+              <p className="admin-empty">Loading your articles…</p>
+            ) : posts.length ? (
+              <div className="admin-post-list">
+                {posts.map((item) => (
+                  <article className="admin-post-row" key={item.slug}>
+                    <div>
+                      <span className={`status-pill${item.draft ? " is-draft" : " is-published"}`}>
+                        {item.draft ? "Draft" : "Published"}
+                      </span>
+                      <h3>{item.title}</h3>
+                      <p>{item.excerpt}</p>
+                    </div>
+                    <div className="admin-post-actions">
+                      <button
+                        className="button button-outline"
+                        type="button"
+                        onClick={() => editPost(item)}
+                        disabled={Boolean(deletingSlug)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="button button-danger"
+                        type="button"
+                        onClick={() => void deletePost(item)}
+                        disabled={saving || Boolean(deletingSlug)}
+                      >
+                        {deletingSlug === item.slug ? "Deleting…" : "Delete"}
+                      </button>
+                    </div>
+                  </article>
+                ))}
               </div>
-              <button className="text-button" type="button" onClick={() => setShowEditor(false)}>
-                Close
-              </button>
-            </div>
-            <div className="admin-form-grid">
-              <label>
-                Title
-                <input
-                  required
-                  maxLength={160}
-                  value={post.title}
-                  onChange={(event) => setPost({
-                    ...post,
-                    title: event.target.value,
-                    slug: editing ? post.slug : slugFromTitle(event.target.value),
-                  })}
-                />
-              </label>
-              <label>
-                Article URL
-                <input
-                  required
-                  value={post.slug}
-                  disabled={editing}
-                  onChange={(event) => setPost({ ...post, slug: slugFromTitle(event.target.value) })}
-                />
-              </label>
-              <label className="form-wide">
-                Short summary
-                <textarea
-                  required
-                  rows={2}
-                  maxLength={300}
-                  value={post.excerpt}
-                  onChange={(event) => setPost({ ...post, excerpt: event.target.value })}
-                />
-              </label>
-              <label>
-                Topic
-                <select
-                  value={post.category}
-                  onChange={(event) => setPost({ ...post, category: event.target.value })}
-                >
-                  <option value="web-design">Web design</option>
-                  <option value="growth">Growth &amp; marketing</option>
-                  <option value="strategy">Strategy</option>
-                  <option value="brand-positioning">Brand positioning &amp; messaging</option>
-                </select>
-              </label>
-              <label>
-                Publish date
-                <input
-                  type="date"
-                  required
-                  value={post.date}
-                  onChange={(event) => setPost({ ...post, date: event.target.value })}
-                />
-              </label>
-              <label>
-                Reading time (minutes)
-                <input
-                  type="number"
-                  min={1}
-                  max={120}
-                  value={post.readingTime}
-                  onChange={(event) => setPost({ ...post, readingTime: Number(event.target.value) })}
-                />
-              </label>
-            </div>
-            <label className="markdown-label">
-              Article content <span>Markdown is supported (use ## for a section heading).</span>
-              <textarea
-                className="markdown-editor"
-                required
-                value={post.body}
-                onChange={(event) => setPost({ ...post, body: event.target.value })}
-              />
-            </label>
-            <div className="admin-editor-actions">
-              <button
-                className="button button-outline"
-                type="button"
-                disabled={saving}
-                onClick={() => void savePost(true)}
-              >
-                {saving ? "Saving…" : "Save draft"}
-              </button>
-              <button
-                className="button"
-                type="button"
-                disabled={saving}
-                onClick={() => void savePost(false)}
-              >
-                {saving ? "Publishing…" : "Publish article"}
-              </button>
-            </div>
+            ) : (
+              <p className="admin-empty">
+                No dashboard articles yet. Choose <strong>New article</strong> to start writing.
+              </p>
+            )}
           </section>
-        )}
-      </div>
+
+          {showEditor && (
+            <section className="admin-card admin-editor" aria-labelledby="editor-heading">
+              <div className="admin-card-heading">
+                <div>
+                  <p className="eyebrow"><span className="eyebrow-dot" /> Article editor</p>
+                  <h2 id="editor-heading">{editing ? "Edit article" : "Write a new article"}</h2>
+                </div>
+                <button className="text-button" type="button" onClick={() => setShowEditor(false)}>
+                  Close
+                </button>
+              </div>
+              <div className="admin-form-grid">
+                <label>
+                  Title
+                  <input
+                    required
+                    maxLength={160}
+                    value={post.title}
+                    onChange={(event) => setPost({
+                      ...post,
+                      title: event.target.value,
+                      slug: editing ? post.slug : slugFromTitle(event.target.value),
+                    })}
+                  />
+                </label>
+                <label>
+                  Article URL
+                  <input
+                    required
+                    value={post.slug}
+                    disabled={editing}
+                    onChange={(event) => setPost({ ...post, slug: slugFromTitle(event.target.value) })}
+                  />
+                </label>
+                <label className="form-wide">
+                  Short summary
+                  <textarea
+                    required
+                    rows={2}
+                    maxLength={300}
+                    value={post.excerpt}
+                    onChange={(event) => setPost({ ...post, excerpt: event.target.value })}
+                  />
+                </label>
+                <label>
+                  Topic
+                  <select
+                    value={post.category}
+                    onChange={(event) => setPost({ ...post, category: event.target.value })}
+                  >
+                    <option value="web-design">Web design</option>
+                    <option value="growth">Growth &amp; marketing</option>
+                    <option value="strategy">Strategy</option>
+                    <option value="brand-positioning">Brand positioning &amp; messaging</option>
+                  </select>
+                </label>
+                <label>
+                  Publish date
+                  <input
+                    type="date"
+                    required
+                    value={post.date}
+                    onChange={(event) => setPost({ ...post, date: event.target.value })}
+                  />
+                </label>
+                <label>
+                  Reading time (minutes)
+                  <input
+                    type="number"
+                    min={1}
+                    max={120}
+                    value={post.readingTime}
+                    onChange={(event) => setPost({ ...post, readingTime: Number(event.target.value) })}
+                  />
+                </label>
+              </div>
+              <label className="markdown-label">
+                Article content <span>Markdown is supported (use ## for a section heading).</span>
+                <textarea
+                  className="markdown-editor"
+                  required
+                  value={post.body}
+                  onChange={(event) => setPost({ ...post, body: event.target.value })}
+                />
+              </label>
+              <div className="admin-editor-actions">
+                <button
+                  className="button button-outline"
+                  type="button"
+                  disabled={saving}
+                  onClick={() => void savePost(true)}
+                >
+                  {saving ? "Saving…" : "Save draft"}
+                </button>
+                <button
+                  className="button"
+                  type="button"
+                  disabled={saving}
+                  onClick={() => void savePost(false)}
+                >
+                  {saving ? "Publishing…" : "Publish article"}
+                </button>
+              </div>
+            </section>
+          )}
+        </div>
+      )}
+
+      {/* Kanban Tab */}
+      {activeTab === "kanban" && (
+        <div className="admin-main admin-main-wide">
+          <KanbanBoard articleSlugs={posts.map((p) => p.slug)} />
+        </div>
+      )}
     </main>
   );
 }
