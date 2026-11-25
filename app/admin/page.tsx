@@ -582,7 +582,27 @@ export default function AdminPage() {
       {/* Kanban Tab */}
       {activeTab === "kanban" && (
         <div className="admin-main admin-main-wide">
-          <KanbanBoard articleSlugs={posts.map((p) => p.slug)} />
+          {session.user?.isAdmin ? (
+            <KanbanBoard articleSlugs={posts.map((p) => p.slug)} />
+          ) : (
+            <section className="admin-login">
+              <p className="eyebrow"><span className="eyebrow-dot" /> Session refresh required</p>
+              <h1>Refresh your admin sign-in</h1>
+              <p>
+                Your current GitHub session was created before admin verification was enabled.
+                Sign in again once to verify your admin account and unlock the Kanban board.
+              </p>
+              <button
+                className="button"
+                type="button"
+                onClick={() => {
+                  void signOut({ redirect: false }).then(() => signIn("github"));
+                }}
+              >
+                Refresh GitHub session <span aria-hidden="true">↗</span>
+              </button>
+            </section>
+          )}
         </div>
       )}
     </main>

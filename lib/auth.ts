@@ -103,19 +103,30 @@ export async function requireAdminSession(req?: NextRequest) {
   if (!allowedUsername) return null;
 
   if (req) {
-    // Route Handler path: read the JWT directly from the request cookie.
-    // getToken() handles both __Secure- and plain cookie names automatically.
-    const token = await getToken({
-      req,
-      secret: process.env.NEXTAUTH_SECRET,
-      cookieName: `${cookiePrefix}next-auth.session-token`,
-    });
-    if (!token?.isAdmin) return null;
-    if ((token.username as string | undefined)?.toLowerCase() !== allowedUsername) return null;
-    return token;
+    // Route Handler path: check both possible cookie names in case NEXTAUTH_URL
+    // differed when the cookie was issued (e.g. __Secure- on HTTPS vs plain).
+    const secret = process.env.NEXTAUTH_SECRET;
+    const candidateCookies = Array.from(
+      new Set([
+        `${cookiePrefix}next-auth.session-token`,
+        "__Secure-next-auth.session-token",
+        "next-auth.session-token",
+      ]),
+    );
+
+    for (const cookieName of candidateCookies) {
+      const token = await getToken({ req, secret, cookieName });
+      if (
+        token?.isAdmin &&
+        typeof token.username === "string" &&
+        token.username.toLowerCase() === allowedUsername
+      ) {
+        return token;
+      }
+    }
   }
 
-  // Server Component path: use getServerSession (reads from next/headers context).
+  // Fallback / Server Component path: use getServerSession (reads from next/headers context).
   const session = await getServerSession(authOptions);
   if (!session?.user?.isAdmin) return null;
   if (session.user.username?.toLowerCase() !== allowedUsername) return null;
