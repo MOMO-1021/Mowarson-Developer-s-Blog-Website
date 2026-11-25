@@ -4,6 +4,8 @@ excerpt: >-
   I want to be a Marketing Specialist on "Brand Positioning & Messaging" and so,
   I have started learning and blogging.
 category: brand-positioning
+postCode: BP-01
+format: field-note
 date: '2026-11-19'
 readingTime: 2
 draft: false

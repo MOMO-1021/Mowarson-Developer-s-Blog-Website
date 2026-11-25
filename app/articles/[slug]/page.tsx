@@ -2,12 +2,18 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import ReactMarkdown from "react-markdown";
 import { ArticleComments } from "@/app/components/article-comments";
+import { ArticleMarkdown } from "@/app/components/article-markdown";
 import { ArticleShare } from "@/app/components/article-share";
 import { SiteFooter } from "@/app/components/site-footer";
 import { SiteHeader } from "@/app/components/site-header";
-import { getPublishedPost, getPublishedPosts } from "@/lib/posts";
+import {
+  CATEGORY_META,
+  FORMAT_LABELS,
+  extractHeadings,
+  getPublishedPost,
+  getPublishedPosts,
+} from "@/lib/posts";
 import { createArticleSchema, getSiteUrl } from "@/lib/seo";
 
 interface ArticlePageProps {
@@ -50,7 +56,20 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     notFound();
   }
 
-  const categoryLabel = post.category.replace("-", " ");
+  const allPosts = await getPublishedPosts();
+  const seriesPosts = post.series
+    ? allPosts
+        .filter((p) => p.series === post.series)
+        .sort((a, b) => (a.seriesOrder ?? 999) - (b.seriesOrder ?? 999))
+    : [];
+
+  const relatedPosts = allPosts
+    .filter((p) => p.slug !== post.slug && p.category === post.category)
+    .slice(0, 3);
+
+  const headings = extractHeadings(post.body);
+  const categoryLabel = CATEGORY_META[post.category]?.label ?? post.category.replace("-", " ");
+  const formatLabel = post.format ? FORMAT_LABELS[post.format] : null;
   const displayDate = new Intl.DateTimeFormat("en", {
     month: "long",
     day: "numeric",
@@ -69,13 +88,19 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       <SiteHeader />
       <main className="container">
         <nav className="breadcrumbs" aria-label="Breadcrumb">
+          <Link href="/#articles">Articles</Link>
+          <span aria-hidden="true">/</span>
           <span>{categoryLabel}</span>
           <span aria-hidden="true">/</span>
-          <span aria-current="page">{post.title}</span>
+          <span aria-current="page">{post.postCode ? `${post.postCode}: ` : ""}{post.title}</span>
         </nav>
         <div className="post-layout">
           <article className="post" id="article-top">
-            <span className="topic-tag">{categoryLabel}</span>
+            <div className="post-badges">
+              {post.postCode && <span className="post-code-pill">{post.postCode}</span>}
+              <span className="topic-tag">{categoryLabel}</span>
+              {formatLabel && <span className="format-pill">{formatLabel}</span>}
+            </div>
             <h1>{post.title}</h1>
             <p className="post-dek">{post.excerpt}</p>
             <div className="post-meta">
@@ -92,9 +117,31 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               <span aria-hidden="true">·</span>
               <span>{post.readingTime} min read</span>
             </div>
+
+            {post.series && seriesPosts.length > 1 && (
+              <div className="series-banner">
+                <strong>Series: {post.series}</strong>
+                <ol className="series-list">
+                  {seriesPosts.map((sp, idx) => (
+                    <li key={sp.slug} className={sp.slug === post.slug ? "is-current" : ""}>
+                      {sp.slug === post.slug ? (
+                        <span>
+                          Part {sp.seriesOrder ?? idx + 1}: {sp.title} (reading)
+                        </span>
+                      ) : (
+                        <Link href={`/articles/${sp.slug}`}>
+                          Part {sp.seriesOrder ?? idx + 1}: {sp.title}
+                        </Link>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            )}
+
             <ArticleShare title={post.title} />
             <div className="post-content">
-              <ReactMarkdown>{post.body}</ReactMarkdown>
+              <ArticleMarkdown content={post.body} />
             </div>
             <div className="post-end">
               <p>Want to clarify the story behind your brand?</p>
@@ -109,9 +156,42 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </div>
             <ArticleComments slug={post.slug} />
           </article>
-          <aside className="post-aside" aria-label="More articles">
-            <h2>Keep reading</h2>
-            <Link href="/#articles">View all articles →</Link>
+
+          <aside className="post-aside" aria-label="Article navigation">
+            {headings.length > 0 && (
+              <div className="toc-box">
+                <h2>In this article</h2>
+                <nav className="toc-nav" aria-label="Table of contents">
+                  {headings.map((h) => (
+                    <a
+                      key={h.id}
+                      href={`#${h.id}`}
+                      className={h.level === 3 ? "toc-sub" : undefined}
+                    >
+                      {h.text}
+                    </a>
+                  ))}
+                </nav>
+              </div>
+            )}
+
+            {relatedPosts.length > 0 && (
+              <div className="aside-related">
+                <h2>Related in {categoryLabel}</h2>
+                <ul>
+                  {relatedPosts.map((rp) => (
+                    <li key={rp.slug}>
+                      <Link href={`/articles/${rp.slug}`}>{rp.title}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            <div className="aside-all">
+              <h2>Keep reading</h2>
+              <Link href="/#articles">View all articles →</Link>
+            </div>
           </aside>
         </div>
       </main>

@@ -1,21 +1,34 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import matter from "gray-matter";
+import {
+  postCategories,
+  postFormats,
+  type PostCategory,
+  type PostFormat,
+} from "./blog-taxonomy";
 
-export const postCategories = [
-  "web-design",
-  "growth",
-  "strategy",
-  "brand-positioning",
-] as const;
-
-export type PostCategory = (typeof postCategories)[number];
+export {
+  CATEGORY_META,
+  FORMAT_LABELS,
+  extractHeadings,
+  headingToId,
+  postCategories,
+  postFormats,
+  type PostCategory,
+  type PostFormat,
+  type TocHeading,
+} from "./blog-taxonomy";
 
 export interface BlogPost {
   slug: string;
   title: string;
   excerpt: string;
   category: PostCategory;
+  format?: PostFormat;
+  postCode?: string;
+  series?: string;
+  seriesOrder?: number;
   date: string;
   readingTime: number;
   draft: boolean;
@@ -40,11 +53,36 @@ export function parsePost(source: string, slug: string): BlogPost {
     throw new Error(`Post "${slug}" must have a positive readingTime value.`);
   }
 
+  const format =
+    typeof data.format === "string" &&
+    (postFormats as readonly string[]).includes(data.format)
+      ? (data.format as PostFormat)
+      : undefined;
+
+  const postCode =
+    typeof data.postCode === "string" && data.postCode.trim()
+      ? data.postCode.trim().toUpperCase()
+      : undefined;
+
+  const series =
+    typeof data.series === "string" && data.series.trim()
+      ? data.series.trim()
+      : undefined;
+
+  const seriesOrder =
+    data.seriesOrder !== undefined && Number.isInteger(Number(data.seriesOrder))
+      ? Number(data.seriesOrder)
+      : undefined;
+
   return {
     slug,
     title: data.title,
     excerpt: data.excerpt,
     category: data.category,
+    format,
+    postCode,
+    series,
+    seriesOrder,
     date: data.date,
     readingTime,
     draft: data.draft === true,

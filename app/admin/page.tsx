@@ -2,35 +2,34 @@
 
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useCallback, useEffect, useState } from "react";
+import {
+  CATEGORY_META,
+  FORMAT_LABELS,
+  INFOGRAPHIC_SNIPPETS,
+  POST_FORMAT_TEMPLATES,
+  buildPrefixedSlug,
+  type PostCategory,
+  type PostFormat,
+} from "@/lib/blog-taxonomy";
+import { ArticleMarkdown } from "../components/article-markdown";
 import KanbanBoard from "../components/kanban-board";
 
 interface AdminPost {
   slug: string;
   title: string;
   excerpt: string;
-  category: string;
+  category: PostCategory;
+  format?: PostFormat;
+  postCode?: string;
+  series?: string;
+  seriesOrder?: number;
   date: string;
   readingTime: number;
   draft: boolean;
   body: string;
 }
 
-const starterBody = `## The short version
-
-Write a concise summary of the key idea.
-
-## Why it matters
-
-Explain the problem your reader is trying to solve.
-
-## Practical steps
-
-Share useful, specific guidance.
-
-## Final thoughts
-
-Summarize the takeaway and suggest a next step.
-`;
+const starterBody = POST_FORMAT_TEMPLATES.guide;
 
 function slugFromTitle(title: string) {
   return title
@@ -54,6 +53,10 @@ const emptyPost = (): AdminPost => ({
   title: "",
   excerpt: "",
   category: "web-design",
+  format: "guide",
+  postCode: "",
+  series: "",
+  seriesOrder: undefined,
   date: today(),
   readingTime: 5,
   draft: true,
@@ -69,6 +72,7 @@ export default function AdminPage() {
   const [post, setPost] = useState<AdminPost>(emptyPost);
   const [editing, setEditing] = useState(false);
   const [showEditor, setShowEditor] = useState(false);
+  const [editorPreview, setEditorPreview] = useState(false);
   const [loadingPosts, setLoadingPosts] = useState(false);
   const [saving, setSaving] = useState(false);
   const [deletingSlug, setDeletingSlug] = useState<string | null>(null);
@@ -319,15 +323,19 @@ export default function AdminPage() {
                     required
                     maxLength={160}
                     value={post.title}
-                    onChange={(event) => setPost({
-                      ...post,
-                      title: event.target.value,
-                      slug: editing ? post.slug : slugFromTitle(event.target.value),
-                    })}
+                    onChange={(event) =>
+                      setPost({
+                        ...post,
+                        title: event.target.value,
+                        slug: editing
+                          ? post.slug
+                          : buildPrefixedSlug(event.target.value, post.category),
+                      })
+                    }
                   />
                 </label>
                 <label>
-                  Article URL
+                  Article URL (auto-prefixed by topic)
                   <input
                     required
                     value={post.slug}
@@ -349,13 +357,77 @@ export default function AdminPage() {
                   Topic
                   <select
                     value={post.category}
-                    onChange={(event) => setPost({ ...post, category: event.target.value })}
+                    onChange={(event) => {
+                      const nextCategory = event.target.value as PostCategory;
+                      setPost({
+                        ...post,
+                        category: nextCategory,
+                        slug:
+                          !editing && post.title
+                            ? buildPrefixedSlug(post.title, nextCategory)
+                            : post.slug,
+                      });
+                    }}
                   >
-                    <option value="web-design">Web design</option>
-                    <option value="growth">Growth &amp; marketing</option>
-                    <option value="strategy">Strategy</option>
-                    <option value="brand-positioning">Brand positioning &amp; messaging</option>
+                    {Object.entries(CATEGORY_META).map(([key, meta]) => (
+                      <option key={key} value={key}>
+                        {meta.label} ({meta.slugPrefix})
+                      </option>
+                    ))}
                   </select>
+                </label>
+                <label>
+                  Post Format
+                  <select
+                    value={post.format ?? "guide"}
+                    onChange={(event) =>
+                      setPost({ ...post, format: event.target.value as PostFormat })
+                    }
+                  >
+                    {Object.entries(FORMAT_LABELS).map(([key, label]) => (
+                      <option key={key} value={key}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label>
+                  Post Code (e.g. {CATEGORY_META[post.category]?.codePrefix}-01)
+                  <input
+                    maxLength={20}
+                    placeholder={`${CATEGORY_META[post.category]?.codePrefix}-01`}
+                    value={post.postCode ?? ""}
+                    onChange={(event) =>
+                      setPost({ ...post, postCode: event.target.value.toUpperCase() })
+                    }
+                  />
+                </label>
+                <label>
+                  Series name (optional)
+                  <input
+                    maxLength={80}
+                    placeholder="e.g. Brand Positioning Basics"
+                    value={post.series ?? ""}
+                    onChange={(event) => setPost({ ...post, series: event.target.value })}
+                  />
+                </label>
+                <label>
+                  Series part # (optional)
+                  <input
+                    type="number"
+                    min={1}
+                    max={99}
+                    placeholder="1"
+                    value={post.seriesOrder ?? ""}
+                    onChange={(event) =>
+                      setPost({
+                        ...post,
+                        seriesOrder: event.target.value
+                          ? Number(event.target.value)
+                          : undefined,
+                      })
+                    }
+                  />
                 </label>
                 <label>
                   Publish date
@@ -377,15 +449,113 @@ export default function AdminPage() {
                   />
                 </label>
               </div>
-              <label className="markdown-label">
-                Article content <span>Markdown is supported (use ## for a section heading).</span>
-                <textarea
-                  className="markdown-editor"
-                  required
-                  value={post.body}
-                  onChange={(event) => setPost({ ...post, body: event.target.value })}
-                />
-              </label>
+              <div className="editor-toolbar">
+                <div className="editor-toolbar-group">
+                  <button
+                    type="button"
+                    className={`editor-mode-btn${!editorPreview ? " is-active" : ""}`}
+                    onClick={() => setEditorPreview(false)}
+                  >
+                    Write
+                  </button>
+                  <button
+                    type="button"
+                    className={`editor-mode-btn${editorPreview ? " is-active" : ""}`}
+                    onClick={() => setEditorPreview(true)}
+                  >
+                    Live Preview
+                  </button>
+                </div>
+                <div className="editor-toolbar-group">
+                  <button
+                    type="button"
+                    className="kb-chip"
+                    onClick={() => {
+                      const fmt = post.format ?? "guide";
+                      if (
+                        !post.body.trim() ||
+                        window.confirm(`Replace editor content with the "${FORMAT_LABELS[fmt]}" template?`)
+                      ) {
+                        setPost({ ...post, body: POST_FORMAT_TEMPLATES[fmt] });
+                      }
+                    }}
+                  >
+                    Apply {FORMAT_LABELS[post.format ?? "guide"]} template
+                  </button>
+                  <button
+                    type="button"
+                    className="kb-chip"
+                    onClick={() =>
+                      setPost({ ...post, body: `${post.body}\n\n${INFOGRAPHIC_SNIPPETS.callout}` })
+                    }
+                  >
+                    + Callout
+                  </button>
+                  <button
+                    type="button"
+                    className="kb-chip"
+                    onClick={() =>
+                      setPost({
+                        ...post,
+                        body: `${post.body}\n\n${INFOGRAPHIC_SNIPPETS["stat-grid"]}`,
+                      })
+                    }
+                  >
+                    + Stat Grid
+                  </button>
+                  <button
+                    type="button"
+                    className="kb-chip"
+                    onClick={() =>
+                      setPost({
+                        ...post,
+                        body: `${post.body}\n\n${INFOGRAPHIC_SNIPPETS["process-steps"]}`,
+                      })
+                    }
+                  >
+                    + Process Steps
+                  </button>
+                  <button
+                    type="button"
+                    className="kb-chip"
+                    onClick={() =>
+                      setPost({
+                        ...post,
+                        body: `${post.body}\n\n${INFOGRAPHIC_SNIPPETS.comparison}`,
+                      })
+                    }
+                  >
+                    + Comparison
+                  </button>
+                  <button
+                    type="button"
+                    className="kb-chip"
+                    onClick={() =>
+                      setPost({
+                        ...post,
+                        body: `${post.body}\n\n${INFOGRAPHIC_SNIPPETS["bar-chart"]}`,
+                      })
+                    }
+                  >
+                    + Bar Chart
+                  </button>
+                </div>
+              </div>
+              {editorPreview ? (
+                <div className="editor-preview post-content">
+                  <ArticleMarkdown content={post.body} />
+                </div>
+              ) : (
+                <label className="markdown-label">
+                  Article content <span>Markdown, callouts, and infographics are supported.</span>
+                  <textarea
+                    className="markdown-editor"
+                    required
+                    value={post.body}
+                    onChange={(event) => setPost({ ...post, body: event.target.value })}
+                  />
+                </label>
+              )}
               <div className="admin-editor-actions">
                 <button
                   className="button button-outline"

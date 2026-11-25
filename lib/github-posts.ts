@@ -3,8 +3,10 @@ import matter from "gray-matter";
 import {
   parsePost,
   postCategories,
+  postFormats,
   type BlogPost,
   type PostCategory,
+  type PostFormat,
 } from "@/lib/posts";
 
 interface GitHubFile {
@@ -20,6 +22,10 @@ export interface PostInput {
   title: string;
   excerpt: string;
   category: PostCategory;
+  format?: PostFormat;
+  postCode?: string;
+  series?: string;
+  seriesOrder?: number;
   date: string;
   readingTime: number;
   draft: boolean;
@@ -159,11 +165,36 @@ export function validatePostInput(value: unknown): PostInput {
   if (typeof post.body !== "string" || !post.body.trim() || post.body.length > 200_000) {
     throw new Error("Article content is required and must be under 200,000 characters.");
   }
+  const format =
+    typeof post.format === "string" &&
+    (postFormats as readonly string[]).includes(post.format)
+      ? (post.format as PostFormat)
+      : undefined;
+  const postCode =
+    typeof post.postCode === "string" && post.postCode.trim()
+      ? post.postCode.trim().toUpperCase().slice(0, 20)
+      : undefined;
+  const series =
+    typeof post.series === "string" && post.series.trim()
+      ? post.series.trim().slice(0, 80)
+      : undefined;
+  const seriesOrder =
+    post.seriesOrder !== undefined &&
+    post.seriesOrder !== "" &&
+    Number.isInteger(Number(post.seriesOrder)) &&
+    Number(post.seriesOrder) > 0
+      ? Number(post.seriesOrder)
+      : undefined;
+
   return {
     slug: post.slug,
     title: post.title.trim(),
     excerpt: post.excerpt.trim(),
     category: post.category as PostCategory,
+    ...(format ? { format } : {}),
+    ...(postCode ? { postCode } : {}),
+    ...(series ? { series } : {}),
+    ...(seriesOrder ? { seriesOrder } : {}),
     date: post.date,
     readingTime,
     draft: post.draft,
@@ -194,14 +225,20 @@ export async function saveRepositoryPost(
     throw new GitHubError("That article slug is already in use.", 409);
   }
 
-  const source = matter.stringify(post.body, {
+  const frontmatter: Record<string, unknown> = {
     title: post.title,
     excerpt: post.excerpt,
     category: post.category,
     date: post.date,
     readingTime: post.readingTime,
     draft: post.draft,
-  });
+  };
+  if (post.format) frontmatter.format = post.format;
+  if (post.postCode) frontmatter.postCode = post.postCode;
+  if (post.series) frontmatter.series = post.series;
+  if (post.seriesOrder) frontmatter.seriesOrder = post.seriesOrder;
+
+  const source = matter.stringify(post.body, frontmatter);
   const payload = {
     message: `${post.draft ? "Save draft" : "Publish"}: ${post.title}`,
     content: Buffer.from(source, "utf8").toString("base64"),
