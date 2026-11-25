@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { requireAdminSession } from "@/lib/auth";
 import { getKanbanDb, parsePositiveInt } from "@/lib/kanban-server";
 
@@ -10,8 +10,8 @@ function errorResponse(error: unknown) {
 }
 
 // GET /api/admin/kanban/columns — list all columns and tasks (admin only)
-export async function GET() {
-  if (!(await requireAdminSession())) {
+export async function GET(request: NextRequest) {
+  if (!(await requireAdminSession(request))) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
   try {
@@ -49,8 +49,8 @@ export async function GET() {
 }
 
 // POST /api/admin/kanban/columns — create a new column (admin only)
-export async function POST(request: Request) {
-  if (!(await requireAdminSession())) {
+export async function POST(request: NextRequest) {
+  if (!(await requireAdminSession(request))) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
   let body: unknown;
@@ -94,8 +94,8 @@ export async function POST(request: Request) {
 }
 
 // PUT /api/admin/kanban/columns — update column or batch reorder (admin only)
-export async function PUT(request: Request) {
-  if (!(await requireAdminSession())) {
+export async function PUT(request: NextRequest) {
+  if (!(await requireAdminSession(request))) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
   let body: unknown;
@@ -165,8 +165,8 @@ export async function PUT(request: Request) {
 }
 
 // DELETE /api/admin/kanban/columns — delete a column and its tasks (admin only)
-export async function DELETE(request: Request) {
-  if (!(await requireAdminSession())) {
+export async function DELETE(request: NextRequest) {
+  if (!(await requireAdminSession(request))) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
   let body: unknown;

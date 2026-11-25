@@ -139,10 +139,11 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
               </div>
             )}
 
-            <ArticleShare title={post.title} />
             <div className="post-content">
               <ArticleMarkdown content={post.body} />
             </div>
+            <ArticleComments slug={post.slug} />
+            <ArticleShare title={post.title} />
             <div className="post-end">
               <p>Want to clarify the story behind your brand?</p>
               <a
@@ -154,7 +155,6 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 Let&apos;s talk <span aria-hidden="true">↗</span>
               </a>
             </div>
-            <ArticleComments slug={post.slug} />
           </article>
 
           <aside className="post-aside" aria-label="Article navigation">

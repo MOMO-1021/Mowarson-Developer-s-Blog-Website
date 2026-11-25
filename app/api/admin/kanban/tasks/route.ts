@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { requireAdminSession } from "@/lib/auth";
 import { normalizeDueDate, sanitizeChecklist } from "@/lib/kanban";
 import {
@@ -16,8 +16,8 @@ function errorResponse(error: unknown) {
 }
 
 // POST /api/admin/kanban/tasks — create a new task (admin only)
-export async function POST(request: Request) {
-  if (!(await requireAdminSession())) {
+export async function POST(request: NextRequest) {
+  if (!(await requireAdminSession(request))) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
   let body: unknown;
@@ -122,8 +122,8 @@ export async function POST(request: Request) {
 }
 
 // PUT /api/admin/kanban/tasks — update task fields OR move/reorder (admin only)
-export async function PUT(request: Request) {
-  if (!(await requireAdminSession())) {
+export async function PUT(request: NextRequest) {
+  if (!(await requireAdminSession(request))) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
   let body: unknown;
@@ -266,8 +266,8 @@ export async function PUT(request: Request) {
 }
 
 // DELETE /api/admin/kanban/tasks — delete a task (admin only)
-export async function DELETE(request: Request) {
-  if (!(await requireAdminSession())) {
+export async function DELETE(request: NextRequest) {
+  if (!(await requireAdminSession(request))) {
     return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
   }
   let body: unknown;
