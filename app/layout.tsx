@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import "../style.css";
 import "./app.css";
 import { createWebsiteSchema, getSiteUrl } from "@/lib/seo";
@@ -35,6 +36,24 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        <Script
+          async
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-K5VWHHFQ"
+          strategy="beforeInteractive"
+        />
+        <Script
+          id="gtm-init"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+            `,
+          }}
+        />
+      </head>
       <body>
         <script
           type="application/ld+json"
