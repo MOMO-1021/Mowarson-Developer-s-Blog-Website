@@ -39,17 +39,23 @@ export default function RootLayout({
       <head>
         <Script
           async
-          src="https://www.googletagmanager.com/gtm.js?id=GTM-K5VWHHFQ"
+          src="https://www.googletagmanager.com/gtag/js?id=G-S7P05N251P"
           strategy="beforeInteractive"
         />
         <Script
-          id="gtm-init"
+          id="ga4-init"
           strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               gtag('js', new Date());
+              gtag('config', 'G-S7P05N251P', {
+                send_page_view: true,
+                linker: {
+                  domains: ['mowarsondeveloper.netlify.app', 'mowarsondeveloper-blog-website.netlify.app']
+                }
+              });
             `,
           }}
         />

@@ -3,7 +3,7 @@
   <head>
     <script
       async
-      src="https://www.googletagmanager.com/gtm.js?id=GTM-K5VWHHFQ"
+      src="https://www.googletagmanager.com/gtag/js?id=G-S7P05N251P"
     ></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -11,6 +11,15 @@
         dataLayer.push(arguments);
       }
       gtag("js", new Date());
+      gtag("config", "G-S7P05N251P", {
+        send_page_view: true,
+        linker: {
+          domains: [
+            "mowarsondeveloper.netlify.app",
+            "mowarsondeveloper-blog-website.netlify.app",
+          ],
+        },
+      });
     </script>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
